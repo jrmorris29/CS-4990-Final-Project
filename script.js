@@ -1,18 +1,22 @@
 document.getElementById('sendChatBtn').addEventListener('click', function() {
     const userInput = document.getElementById('chatInput').value.trim();
     const storyOutput = document.getElementById('chatbox');
-
-    if (!userInput) return;  // Check if the userInput is not empty
-
-    // Clear the chatbox before displaying new content
+    const solveMysteryMode = document.getElementById('toggleSolveMysteryBtn').textContent.includes('Don\'t');
     storyOutput.innerHTML = '';
+
+    if (!userInput) return;
 
     const loadingIndicator = document.createElement('div');
     loadingIndicator.className = 'spinner';
     storyOutput.appendChild(loadingIndicator);
 
-    const API_KEY = "sk-proj-IJo4bEN1ZD1XDyqhIpc1T3BlbkFJsR15glqTeYWFBVxvY8ND"; // Replace this with your actual API key
+    const API_KEY = "sk-proj-IJo4bEN1ZD1XDyqhIpc1T3BlbkFJsR15glqTeYWFBVxvY8ND";
     const API_URL = "https://api.openai.com/v1/chat/completions";
+
+    // Adjust the prompt to mimic the style of Two-Minute Mysteries
+    const prompt = solveMysteryMode
+        ? `Based on the prompt: "${userInput}", generate a concise murder mystery story similar to those in the book Two-Minute Mysteries. The story should present a detective solving a case, providing enough clues for readers to deduce how the detective solved the case. The story should conclude with a clear outcome but not explicitly reveal the detective's method. Include a solution separately, prefaced by "Solution:", so that it can be shown afterward in an "Answer" section.`
+        : `Based on the prompt: "${userInput}", generate a murder mystery story. Start with a title and then proceed with the story. Be sure to include a clear conclusion of the mystery.`;
 
     const requestOptions = {
         method: 'POST',
@@ -27,7 +31,7 @@ document.getElementById('sendChatBtn').addEventListener('click', function() {
                 content: "Generate a murder mystery story with a title."
             }, {
                 role: "user",
-                content: `Based on the prompt: "${userInput}", generate a murder mystery story. Start with a title and then proceed with the story. Be sure to include a clear conclusion of the mystery.`
+                content: prompt
             }],
         })
     };
@@ -36,13 +40,29 @@ document.getElementById('sendChatBtn').addEventListener('click', function() {
         .then(response => response.json())
         .then(data => {
             const text = data.choices[0].message.content.trim();
-            // Splitting text to separate the title and the story
-            const firstBreakIndex = text.indexOf("\n"); // Find the first newline, assuming title is separated by a newline
+            const firstBreakIndex = text.indexOf("\n");
             const title = text.substring(0, firstBreakIndex).trim();
-            const story = text.substring(firstBreakIndex + 1).trim();
+            let story = text.substring(firstBreakIndex + 1).trim();
+            let solutionIndex = story.indexOf("Solution:");
+            let solution = '';
+
+            // If a solution is present in the response, separate it from the main story
+            if (solutionIndex !== -1) {
+                solution = story.substring(solutionIndex + "Solution:".length).trim();
+                story = story.substring(0, solutionIndex).trim(); // Keep only the story without the solution
+            }
 
             const formattedText = `<h2>${title}</h2><p>${story.replace(/(?<!\b(Dr|Mr|Mrs|Ms))\.(\s+)(?=[A-Z])/g, ".</p><p>")}</p>`;
-            storyOutput.innerHTML = formattedText; // Display the formatted text with title and paragraphs
+
+            if (solveMysteryMode) {
+                // Create an answer box with the solution provided
+                const answerBox = document.createElement('details');
+                answerBox.innerHTML = `<summary>Answer</summary><p>${solution}</p>`;
+                storyOutput.innerHTML = formattedText;
+                storyOutput.appendChild(answerBox);
+            } else {
+                storyOutput.innerHTML = formattedText;
+            }
         })
         .catch(error => {
             console.error('Error:', error);
@@ -52,8 +72,17 @@ document.getElementById('sendChatBtn').addEventListener('click', function() {
         })
         .finally(() => {
             storyOutput.removeChild(loadingIndicator);
-            // Removed auto-scroll to the bottom
         });
+});
+
+document.getElementById('toggleSolveMysteryBtn').addEventListener('click', function() {
+    const toggleBtn = document.getElementById('toggleSolveMysteryBtn');
+    const isCurrentlySolving = toggleBtn.textContent.includes('Don\'t');
+
+    toggleBtn.textContent = isCurrentlySolving ? 'Want to solve the mystery yourself?' : 'Don\'t want to solve the mystery yourself?';
+
+    document.getElementById('solveRevealed').style.display = isCurrentlySolving ? 'block' : 'none';
+    document.getElementById('solveNotRevealed').style.display = isCurrentlySolving ? 'none' : 'block';
 });
 
 document.getElementById('chatInput').addEventListener('keydown', (e) => {

@@ -17,6 +17,14 @@
         </div>
         <textarea id="chatInput" class="input-field" placeholder="Type your murder mystery prompt here..."></textarea>
         <button id="sendChatBtn" class="send-btn">Generate Story</button>
+        <button id="toggleSolveMysteryBtn" class="send-btn">Want to solve the mystery yourself?</button>
+        <div id="solveRevealed" class="info-text">
+            <p>The mystery will be solved and revealed to you.</p>
+        </div>
+        <div id="solveNotRevealed" class="info-text" style="display: none;">
+            <p>The mystery will be solved but not revealed to you.</p>
+            <p>Try to solve the mystery yourself. If you can't figure it out, see the answer underneath the story.</p>
+        </div>
     </div>
     <div class="side-background right"></div>
     <script src="script.js"></script>
