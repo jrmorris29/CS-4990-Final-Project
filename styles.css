@@ -1,0 +1,116 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    /* Changed to stretch to fill the height */
+    overflow: hidden;
+    /* Prevent scrolling */
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.side-background {
+    flex-grow: 1;
+    /* Takes remaining space */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100%;
+    /* Ensures it stretches along the container's height */
+    min-width: 800px;
+    /* Ensure they have a minimum width to be visible */
+}
+
+.side-background.left {
+    background-image: url('Images/LA_D.jpg');
+    /* Check the path and ensure access */
+}
+
+.side-background.right {
+    background-image: url('Images/LA_C.jpg');
+    /* Check the path and ensure access */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 625px;
+    min-width: 625px;
+    max-width: 625px;
+    flex-shrink: 0;
+    /* Prevents the container from shrinking */
+    background-color: burlywood;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 10;
+    /* Ensures it's above the side backgrounds */
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.chatbox {
+    width: 100%;
+    height: 80%;
+    overflow-y: auto;
+    background-color: #eaeaea;
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.input-field,
+.send-btn {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.send-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.send-btn:hover {
+    background-color: #0056b3;
+}
+
+.spinner {
+    border: 6px solid rgba(0, 0, 0, 0.1);
+    border-top: 6px solid blue;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: 45%;
+    left: 47%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
