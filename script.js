@@ -10,7 +10,7 @@ document.getElementById('sendChatBtn').addEventListener('click', function() {
     loadingIndicator.className = 'spinner';
     storyOutput.appendChild(loadingIndicator);
 
-    const API_KEY = "sk-proj-IJo4bEN1ZD1XDyqhIpc1T3BlbkFJsR15glqTeYWFBVxvY8ND";
+    const API_KEY = "API KEY HERE"; //I REMOVED THE API KEY FOR THE GITHUB VERSION
     const API_URL = "https://api.openai.com/v1/chat/completions";
 
     // Adjust the prompt to mimic the style of Two-Minute Mysteries
