@@ -15,8 +15,9 @@ document.getElementById('sendChatBtn').addEventListener('click', function() {
 
     // Adjust the prompt to mimic the style of Two-Minute Mysteries
     const prompt = solveMysteryMode
-        ? `Based on the prompt: "${userInput}", generate a concise murder mystery story similar to those in the book Two-Minute Mysteries. The story should present a detective solving a case, providing enough clues for readers to deduce how the detective solved the case. The story should conclude with a clear outcome but not explicitly reveal the detective's method. Include a solution separately, prefaced by "Solution:", so that it can be shown afterward in an "Answer" section.`
-        : `Based on the prompt: "${userInput}", generate a murder mystery story. Start with a title and then proceed with the story. Be sure to include a clear conclusion of the mystery.`;
+        ? `Based on the prompt: "${userInput}", generate a detailed murder mystery story similar to those in the book Two-Minute Mysteries. The story should provide a detective solving a case, with enough clues for readers to deduce how the detective solved the case. Make the story longer than typical by adding more descriptions and clues, and end with a clear outcome that does not explicitly reveal the detective's method. Include a solution separately, prefaced by "Solution:", so that it can be shown afterward in an "Answer" section.`
+        : `Based on the prompt: "${userInput}", generate a detailed murder mystery story with a clear conclusion. Make the story longer than usual by adding extra descriptive details and clues.`;
+
 
     const requestOptions = {
         method: 'POST',
